@@ -25,16 +25,16 @@ public:
                 last_angular_velocity = new_velocity;
         //ROS_INFO("last angular velocity : %lf", last_angular_velocity);
         //publish filtered velocity
-        std_msgs::Float64 filtered_angular_velocity_msg;
-        filtered_angular_velocity_msg.data = last_angular_velocity;
-        filtered_angular_velocity_pub.publish(filtered_angular_velocity_msg);
+        std_msgs::Float64 filtered_velocity_msg;
+        filtered_velocity_msg.data = last_angular_velocity * radius;
+        filtered_velocity_pub.publish(filtered_velocity_msg);
         pidContol();
     }
 
     void goalVelocityCB(const std_msgs::Float64ConstPtr& ptr){
         //assume that goal is velocity.
         //input: velocity/2
-        goal_angular_velocity = ptr->data/2;
+        goal_angular_velocity = ptr->data/radius/2;
         ROS_WARN("reference input, last_state, error : %lf %lf %lf", goal_angular_velocity, last_angular_velocity,
             goal_angular_velocity - last_angular_velocity);
     }
@@ -81,7 +81,7 @@ public:
         angular_velocity_pub = nh.advertise<std_msgs::Float64>(pub_topic_name.c_str(), 10);
 
         std::string debug_topic_name = driver_node_name + "/filtered_velocity";
-        filtered_angular_velocity_pub = nh.advertise<std_msgs::Float64>(debug_topic_name.c_str(), 10);
+        filtered_velocity_pub = nh.advertise<std_msgs::Float64>(debug_topic_name.c_str(), 10);
     }
 
     ~Motor(){
@@ -98,7 +98,7 @@ private:
     ros::Subscriber state_sub;
     ros::Subscriber goal_sub;
     ros::Publisher angular_velocity_pub;
-    ros::Publisher filtered_angular_velocity_pub;
+    ros::Publisher filtered_velocity_pub;
     std::string driver_node_name;
     bool reverse_rotation;
 
