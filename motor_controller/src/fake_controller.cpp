@@ -1,7 +1,7 @@
 #include <ros/ros.h>
 #include <std_msgs/Float64.h>
 
-#define DEFAULT_VEL 0.4
+#define DEFAULT_VEL 0.05
 
 int main(int argc, char *argv[]){
     ros::init(argc, argv, "fake_controller");

@@ -14,15 +14,18 @@ public:
         //cut outliler and save velocity
         const double lower_bound = last_angular_velocity - outlier_gap_bound;
         const double upper_bound = last_angular_velocity + outlier_gap_bound;
-        double new_velocity = (reverse_rotation) ?
+        double new_angular_velocity = (reverse_rotation) ?
                     -ptr->velocity : ptr->velocity;
-        if ((lower_bound < new_velocity ) && (new_velocity < upper_bound))
-            last_angular_velocity = new_velocity;
+        ROS_INFO("l_bound, u_bound, velocity : %lf %lf %lf", lower_bound, upper_bound, new_angular_velocity);
+                    
+        if ((lower_bound < new_angular_velocity ) && (new_angular_velocity < upper_bound))
+            last_angular_velocity = new_angular_velocity;
         
-        //exception handling for that new_velocity was 0
-        if (abs(last_angular_velocity) < EPSILON)
-            if((-3 <= new_velocity) && (new_velocity <= 3))//exception handling for outlier
-                last_angular_velocity = new_velocity;
+        if (abs(new_angular_velocity) < EPSILON) last_angular_velocity = 0;
+        ////exception handling for that new_velocity was 0
+        //if (abs(last_angular_velocity) < EPSILON)
+        //    if((-3 <= new_velocity) && (new_velocity <= 3))//exception handling for outlier
+        //        last_angular_velocity = new_velocity;
         //ROS_INFO("last angular velocity : %lf", last_angular_velocity);
         //publish filtered velocity
         std_msgs::Float64 filtered_velocity_msg;
@@ -34,7 +37,7 @@ public:
     void goalVelocityCB(const std_msgs::Float64ConstPtr& ptr){
         //assume that goal is velocity.
         //input: velocity/2
-        goal_angular_velocity = ptr->data/radius/2;
+        goal_angular_velocity = ptr->data/radius;
         ROS_WARN("reference input, last_state, error : %lf %lf %lf", goal_angular_velocity, last_angular_velocity,
             goal_angular_velocity - last_angular_velocity);
     }
