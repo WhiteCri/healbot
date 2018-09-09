@@ -1,11 +1,54 @@
 <launch>
-  <node name="healbot_odometry" type="diff_odometry" pkg="healbot_odometry">
-        <param name="wheel_radius" value="0.041"/>
-        <param name="wheel_seperation" value="0.285"/>
-        <param name="right_vel_topic_name" value="/right_motor_driver/filtered_velocity"/>
-        <param name="left_vel_topic_name"  value="/left_motor_driver/filtered_velocity"/>
-        <param name="odom_topic_name" value="/odom"/>
-  </node>
+ <node name="dynamixel_manager" pkg="dynamixel_controllers" type="controller_manager.py" required="true" output="screen">
+        <rosparam>
+            namespace: dxl_manager
+            serial_ports:
+                motor_port:
+                    port_name: "/dev/ttyUSB0"
+                    baud_rate: 1000000
+                    min_motor_id: 1
+                    max_motor_id: 2
+                    update_rate: 20
+        </rosparam>
+    </node>
+
+    <!-- Load controller configuration to parameter server -->
+    <rosparam file="$(find capston_launch)/config/dynamixel_controllers.yaml" command="load"/>
+    
+    <!-- start specified joint controllers -->
+    <node name="dynamixel_controller_spawner1" pkg="dynamixel_controllers" type="controller_spawner.py"
+          args="--manager=dxl_manager
+                --port=motor_port
+                --type=simple
+                right_motor_driver"
+          output="screen"/>
+    <node name="dynamixel_controller_spawner2" pkg="dynamixel_controllers" type="controller_spawner.py"
+          args="--manager=dxl_manager
+                --port=motor_port
+                --type=simple
+                left_motor_driver"
+          output="screen"/>
+
+    <node name="left_motor_controller" pkg="motor_controller" type="motor_controller">
+        <param name="driver_node_name" value="left_motor_driver"/>
+        <param name="outlier_gap_bound" value="2.0"/>
+        <param name="kp" value="1"/>
+        <param name="ki" value="0"/>
+        <param name="kd" value="0"/>
+        <param name="reverse_rotation" value="false"/>
+        <param name="goal_topic_name" value="left_motor_goal"/>
+        <param name="radius" value="0.041"/><!--meter-->
+    </node>
+    <node name="right_motor_controller" pkg="motor_controller" type="motor_controller">
+        <param name="driver_node_name" value="right_motor_driver"/>
+        <param name="outlier_gap_bound" value="2.0"/>
+        <param name="kp" value="1"/>
+        <param name="ki" value="0"/>
+        <param name="kd" value="0"/>
+        <param name="goal_topic_name" value="right_motor_goal"/>
+        <param name="reverse_rotation" value="true"/>
+        <param name="radius" value="0.041"/>
+    </node>
     <node name="rplidarNode"          pkg="rplidar_ros"  type="rplidarNode" output="screen">
     <param name="serial_port"         type="string" value="/dev/ttyUSB1"/>
     <param name="serial_baudrate"     type="int"    value="115200"/><!--A1/A2 -->

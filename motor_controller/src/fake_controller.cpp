@@ -1,11 +1,12 @@
 #include <ros/ros.h>
 #include <std_msgs/Float64.h>
 
-#define DEFAULT_VEL 0.05
-
 int main(int argc, char *argv[]){
     ros::init(argc, argv, "fake_controller");
     ros::NodeHandle nh;
+
+    double default_vel;
+    nh.param("/fake_controller_default_vel", default_vel, 0.05);
 
     ros::Publisher r_pub, l_pub;
     r_pub = nh.advertise<std_msgs::Float64>("/right_motor_goal", 10);
@@ -20,23 +21,23 @@ int main(int argc, char *argv[]){
         switch(ch){
         case 'w':
             ROS_INFO("straight!");
-            r_msg.data = DEFAULT_VEL;
-            l_msg.data = DEFAULT_VEL;
+            r_msg.data = default_vel;
+            l_msg.data = default_vel;
             break;
         case 'a':
             ROS_INFO("left!");
-            r_msg.data = DEFAULT_VEL;
+            r_msg.data = default_vel;
             l_msg.data = 0;
             break;
         case 'd':
             ROS_INFO("right!");
             r_msg.data = 0;
-            l_msg.data = DEFAULT_VEL;
+            l_msg.data = default_vel;
             break;
         case 's':
             ROS_INFO("backward!");
-            r_msg.data = -DEFAULT_VEL;
-            l_msg.data = -DEFAULT_VEL;
+            r_msg.data = -default_vel;
+            l_msg.data = -default_vel;
             break; 
         case ' ':
             ROS_INFO("stop!");

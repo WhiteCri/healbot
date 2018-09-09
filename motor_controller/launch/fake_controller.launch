@@ -1,3 +1,4 @@
 <launch>
     <node name="fake_contoller" pkg="motor_controller" type="fake_controller" output="screen"/>
+    <param name="fake_controller_default_vel" value="1.0"/>
 </launch>
