@@ -7,9 +7,9 @@ right_motor_driver:
     joint_speed: 0
     motor:
         id: 1
-        init: 0
+        init: 24576
         min: 0
-        max: 0
+        max: 49152
 left_motor_driver:
     controller:
         package: dynamixel_controllers
@@ -19,6 +19,6 @@ left_motor_driver:
     joint_speed: 0
     motor:
         id: 2
-        init: 0
+        init: 24576
         min: 0
-        max: 0
+        max: 49152
