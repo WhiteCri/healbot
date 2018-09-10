@@ -74,6 +74,9 @@ public:
 class ObjectTracker{
 public:
     void detectClosestObject(const obstacle_detector::ObstaclesConstPtr& ptr){
+        if (!ptr->segments.size())
+            return;
+        
         //ensure that this function works when the target is selected.
         double target_x, target_y;
         bool no_target=false;
@@ -86,7 +89,6 @@ public:
             detectNewObject(ptr);
             return;
         }
-        ROS_INFO("tracking... %lf %lf", target_x, target_y);
 
         geometry_msgs::Point middle_point;
         middle_point.x = target_x;

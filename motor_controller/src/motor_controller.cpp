@@ -53,9 +53,13 @@ public:
         msg.data *= 2;
         if (reverse_rotation)
             msg.data *= -1;
+        
+        bool stop = false;
+        nh.getParam("fucking_stop", stop);
+        if(stop) msg.data = 0;
         angular_velocity_pub.publish(msg);
 
-        old_error = error;
+        //old_error = error;
     }
 
     Motor() {
