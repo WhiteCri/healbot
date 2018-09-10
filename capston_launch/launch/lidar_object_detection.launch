@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="obstacle_detector" type="obstacle_extractor_node" name="dynamic_obstacle_extractor">
+        <rosparam file="$(find capston_launch)/config/dynamic_obstacle.yaml" command="load"/>
+    </node>
+</launch>

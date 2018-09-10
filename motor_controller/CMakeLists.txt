@@ -12,6 +12,7 @@ find_package(catkin REQUIRED)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   dynamixel_msgs
+  geometry_msgs
 )
 
 catkin_package(
@@ -45,5 +46,13 @@ add_executable(fake_controller
 )
 add_dependencies(fake_controller ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(fake_controller
+  ${catkin_LIBRARIES}
+)
+
+add_executable(cmd_vel_diff_processor
+  src/cmd_vel_diff_processor.cpp
+)
+add_dependencies(cmd_vel_diff_processor ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(cmd_vel_diff_processor
   ${catkin_LIBRARIES}
 )

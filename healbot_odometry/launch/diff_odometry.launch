@@ -1,0 +1,9 @@
+<launch>
+    <node name="healbot_odometry" type="diff_odometry" pkg="healbot_odometry" output="screen">
+        <param name="wheel_radius" value="0.041"/>
+        <param name="wheel_seperation" value="0.285"/>
+        <param name="right_vel_topic_name" value="/right_motor_driver/filtered_velocity"/>
+        <param name="left_vel_topic_name"  value="/left_motor_driver/filtered_velocity"/>
+        <param name="odom_topic_name" value="/odom"/>
+    </node>
+</launch>

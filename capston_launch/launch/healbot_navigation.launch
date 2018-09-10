@@ -1,0 +1,4 @@
+<launch>
+    <include file="$(find capston_launch)/launch/healbot_localization.launch"/>
+    <include file="$(find capston_launch)/launch/healbot_move_base.launch"/>
+</launch>

@@ -1,5 +1,5 @@
 <launch>
-    <node name="left_motor_controller" pkg="motor_controller" type="motor_controller">
+    <!--<node name="left_motor_controller" pkg="motor_controller" type="motor_controller">
         <param name="driver_node_name" value="left_motor_driver"/>
         <param name="outlier_gap_bound" value="1.0"/>
         <param name="kp" value="1"/>
@@ -7,8 +7,8 @@
         <param name="kd" value="0"/>
         <param name="reverse_rotation" value="false"/>
         <param name="goal_topic_name" value="left_motor_goal"/>
-        <param name="radius" value="0.041"/><!--meter-->
-    </node>
+        <param name="radius" value="0.041"/--><!--meter-->
+    <!--</node>
     <node name="right_motor_controller" pkg="motor_controller" type="motor_controller">
         <param name="driver_node_name" value="right_motor_driver"/>
         <param name="outlier_gap_bound" value="0.5"/>
@@ -18,5 +18,9 @@
         <param name="goal_topic_name" value="right_motor_goal"/>
         <param name="reverse_rotation" value="true"/>
         <param name="radius" value="0.041"/>
-    </node>
+    </node>-->
+    <node pkg="motor_controller" type="cmd_vel_diff_processor" name="cmd_vel_diff_processor" output="screen"/>
+    <param name="right_controller_topic_name" value="right_motor_goal"/>
+    <param name="left_controller_topic_name" value="left_motor_goal"/>
+    <param name="wheel_seperation" value="0.285"/>
 </launch>

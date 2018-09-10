@@ -1,0 +1,36 @@
+active: true
+use_scan: true
+use_pcl: false
+
+use_split_and_merge: true
+circles_from_visibels: true
+discard_converted_segments: true
+transform_coordinates: true
+
+min_group_points: 15
+max_group_distance: 0.05
+
+distance_proportion: 0.000628
+max_split_distance: 0.0001
+max_merge_separation: 0.1
+max_merge_spread: 0.2
+max_circle_radius: 0.2
+radius_enlargement: 0.25 
+frame_id: base_link
+
+# ~active (bool, default: true) - active/sleep mode,
+# ~use_scan (bool, default: false) - use laser scan messages,
+# ~use_pcl (bool, default: true) - use point cloud messages (if both scan and pcl are chosen, scans will have priority),
+# ~use_split_and_merge (bool, default: true) - choose wether to use Iterative End Point Fit (false) or Split And Merge (true) algorithm to detect segments,
+# ~circles_from_visibles (bool, default: true) - detect circular obstacles only from fully visible (not occluded) segments,
+# ~discard_converted_segments (bool, default: true) - do not publish segments, from which the circles were spawned,
+# ~transform_coordinates (bool, default: true) - transform the coordinates of obstacles to a frame described with frame_id parameter,
+# ~min_group_points (int, default: 5) - minimum number of points comprising a group to be further processed,
+# ~max_group_distance (double, default: 0.1) - if the distance between two points is greater than this value, start a new group,
+# ~distance_proportion (double, default: 0.00628) - enlarge the allowable distance between points proportionally to the range of point (use scan angle increment in radians),
+# ~max_split_distance (double, default: 0.2) - if a point in group lays further from a leading line than this value, split the group,
+# ~max_merge_separation (double, default: 0.2) - if distance between obstacles is smaller than this value, consider merging them,
+# ~max_merge_spread (double, default: 0.2) - merge two segments if all of their extreme points lay closer to the leading line than this value,
+# ~max_circle_radius (double, default: 0.6) - if a circle would have greater radius than this value, skip it,
+# ~radius_enlargement (double, default: 0.25) - artificially enlarge the circles radius by this value,
+# ~frame_id (string, default: map) - name of the coordinate frame used as origin for produced obstacles (used only if transform_coordinates flag is set to true).a
