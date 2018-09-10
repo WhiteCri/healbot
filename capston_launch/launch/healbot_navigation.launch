@@ -1,4 +1,8 @@
 <launch>
     <include file="$(find capston_launch)/launch/healbot_localization.launch"/>
     <include file="$(find capston_launch)/launch/healbot_move_base.launch"/>
+    <node pkg="motor_controller" type="cmd_vel_diff_processor" name="cmd_vel_diff_processor" output="screen"/>
+    <param name="right_controller_topic_name" value="right_motor_goal"/>
+    <param name="left_controller_topic_name" value="left_motor_goal"/>
+    <param name="wheel_seperation" value="0.285"/>
 </launch>

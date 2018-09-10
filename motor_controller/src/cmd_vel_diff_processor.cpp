@@ -7,7 +7,10 @@
 class VelProcessor{
 public:
     void cmdVelCB(const geometry_msgs::TwistConstPtr& ptr){
-        if ((abs(ptr->linear.x) < EPSILON) && (abs(ptr->angular.z) < EPSILON)) return;
+        if ((fabs(ptr->linear.x) < EPSILON) && (fabs(ptr->angular.z) < EPSILON)) {
+            ROS_INFO("cmd_vel_noise");
+            return;
+        }
         
         double v = ptr->linear.x;
         double w = ptr->angular.z;
@@ -15,9 +18,12 @@ public:
         double vr = (2*v + w*wheel_seperation)/2;
         double vl = (2*v - w*wheel_seperation)/2;
 
-        right_pub.publish(vr);
-        left_pub.publish(vl);
-        ROS_INFO("vr, vl : %lf %lf", vr, vl);
+        std_msgs::Float64 vr_msg, vl_msg;
+        vr_msg.data = vr;
+        vl_msg.data = vl;
+        right_pub.publish(vr_msg);
+        left_pub.publish(vl_msg);
+        ROS_INFO("v, w, vr, vl : %lf %lf %lf %lf",v, w, vr, vl);
     }
 
     VelProcessor(){
@@ -32,9 +38,21 @@ public:
         right_pub = nh.advertise<std_msgs::Float64>(right_controller_topic_name.c_str(), 10);
         left_pub = nh.advertise<std_msgs::Float64>(left_controller_topic_name.c_str(), 10);
     }
+
+    ~VelProcessor(){//stop robot
+        for(int i = 0 ; i < 5; ++i){
+            std_msgs::Float64 vr_msg, vl_msg;
+            vr_msg.data = 0;
+            vl_msg.data = 0;
+            right_pub.publish(vr_msg);
+            left_pub.publish(vl_msg);
+            ros::Rate(10).sleep();
+        }
+    }
 private:
     ros::NodeHandle nh;
     ros::Publisher right_pub, left_pub;
+    ros::Subscriber sub = nh.subscribe("/cmd_vel", 10, &VelProcessor::cmdVelCB, this);
     double wheel_seperation;
 };
 

@@ -79,13 +79,14 @@ public:
         bool no_target=false;
         if(!nh.getParam("target_middle_point_x", target_x)) no_target = true;
         if(!nh.getParam("target_middle_point_y", target_y)) no_target = true;
-        if (abs((target_x - (MISSING_TARGET))) < EPSILON) no_target = true;
-        if (abs((target_y - (MISSING_TARGET))) < EPSILON) no_target = true; // when the obj distance is -1000(-1KM), the obj is missing.
+        if (fabs((target_x - (MISSING_TARGET))) < EPSILON) no_target = true;
+        if (fabs((target_y - (MISSING_TARGET))) < EPSILON) no_target = true; // when the obj distance is -1000(-1KM), the obj is missing.
         if (no_target){
             last_time = ros::Time::now();
             detectNewObject(ptr);
             return;
         }
+        ROS_INFO("tracking... %lf %lf", target_x, target_y);
 
         geometry_msgs::Point middle_point;
         middle_point.x = target_x;

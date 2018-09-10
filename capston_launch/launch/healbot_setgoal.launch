@@ -1,0 +1,16 @@
+<launch>
+    <node pkg="obstacle_detector" type="obstacle_extractor_node" name="dynamic_obstacle_extractor">
+        <rosparam file="$(find capston_launch)/config/dynamic_obstacle.yaml" command="load"/>
+    </node>
+    
+    <node pkg="lidar2d_object_tracker" type="lidar2d_object_tracker" name="lidar2d_object_tracker" output="screen"/>
+    <param name="target_distance_tolerance" value="0.5"/> <!--m/s-->
+    <param name="target_select_x_min" value="0.0"/>
+    <param name="target_select_x_max" value="0.3"/>
+    <param name="target_select_y_min" value="-0.2"/>
+    <param name="target_select_y_max" value="0.2"/>
+    <param name="target_select_duration" value="1"/> <!-- sec -->
+
+    <node pkg="healbot_goal_sender" type="healbot_goal_sender" name="healbot_goal_sender" output="screen"/>
+    <param name="update_goal_rate" value="1.0"/>
+</launch>

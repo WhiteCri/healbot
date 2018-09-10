@@ -58,5 +58,5 @@
     <param name="angle_compensate"    type="bool"   value="true"/>
   </node>
 
-  <node pkg="tf" type="static_transform_publisher" name="lidar2base_link" args="0 0 0 0 0 0 base_link laser 10"/>
+  <node pkg="tf" type="static_transform_publisher" name="lidar2base_link" args="0 0 0 -0.1 0 0 base_link laser 10"/>
 </launch>

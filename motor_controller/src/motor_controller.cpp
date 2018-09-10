@@ -43,12 +43,13 @@ public:
     }
 
     void pidContol() {
-        double error = goal_angular_velocity - last_angular_velocity;
-        double e_dot = error - old_error;
-        tot_error += error;
+        //double error = goal_angular_velocity - last_angular_velocity;
+        //double e_dot = error - old_error;
+        //tot_error += error;
 
         std_msgs::Float64 msg;
-        msg.data = last_angular_velocity + kp*error;// + ki*tot_error + kd*e_dot;
+        //msg.data = last_angular_velocity + kp*error;// + ki*tot_error + kd*e_dot;
+        msg.data = goal_angular_velocity;
         msg.data *= 2;
         if (reverse_rotation)
             msg.data *= -1;
